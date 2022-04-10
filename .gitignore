@@ -1,0 +1,30 @@
+# IDE
+.idea/
+.vscode
+
+# Config folder
+.secrets/
+
+### Django ###
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+media
+
+# Distribution / packaging
+venv/
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+
+### Linux ###
+*~
+### macOS ###
+*.DS_Store
+
+
