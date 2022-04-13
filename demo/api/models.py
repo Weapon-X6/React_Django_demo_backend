@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ObjectDoesNotExist
 import django.utils.timezone
 
+
 class Package(models.Model):
     id = models.AutoField(primary_key=True)
     category = models.CharField(max_length=200)
@@ -17,10 +18,12 @@ class Package(models.Model):
     def __str__(self):
         return self.name
 
+
 class WishlistItem(models.Model):
     session_id = models.CharField(max_length=32)
     package = models.ForeignKey(Package, null=True, on_delete=models.SET_NULL)
     added_to_cart = models.BooleanField(default=False)
+
 
 class Booking(models.Model):
     name = models.CharField(max_length=200)
@@ -31,6 +34,7 @@ class Booking(models.Model):
 
     def __str__(self):
         return '{}, {}'.format(self.name, self.email_address)
+
 
 class PackagePermission(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

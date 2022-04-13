@@ -27,6 +27,7 @@ def create_access_token(user):
 def auth_header(token):
     return { 'HTTP_AUTHORIZATION': 'Bearer {}'.format(token) }
 
+
 class CachingTestCase(APITestCase):
     def test_wishlist_cache(self):
         package = Package.objects.create(category='a', name='package', price=0.0, rating='medium', tour_length=1)
@@ -42,6 +43,7 @@ class CachingTestCase(APITestCase):
         response = self.client.get('/api/v1/wishlist/')
         self.assertListEqual(response.data, [package.id])
         self.assertListEqual(cache.get('wishlist:wishlist-items'), [package.id])
+
 
 class SortingFilteringTestCase(APITestCase):
     def setUp(self):
@@ -63,6 +65,7 @@ class SortingFilteringTestCase(APITestCase):
         response = self.client.get('/api/v1/public/packages/?price_min=50.00', **auth_header(token))
         ids = list(map(lambda result: result['id'], response.data['results']))
         self.assertListEqual(ids, [expensive_package.id])
+
 
 class ValidationTestCase(APITestCase):
     def test_invalid_street_address_returns_error(self):

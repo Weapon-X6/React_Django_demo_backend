@@ -11,12 +11,15 @@ from oauth2_provider.contrib.rest_framework import TokenHasReadWriteScope, Token
 from api.models import Package, PackagePermission, WishlistItem, Booking
 from api.serializers import PackageSerializer, BookingSerializer
 
+
 class PackageCreateView(CreateAPIView):
     queryset = Package.objects.all()
     serializer_class = PackageSerializer
 
+
 class PackagePagination(PageNumberPagination):
     page_size = 9
+
 
 class CanWritePackageFilterBackend(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
@@ -38,12 +41,14 @@ class CanWritePackageFilterBackend(BaseFilterBackend):
         ).values_list('package__id', flat=True)
         return queryset.filter(id__in=own_package_ids)
 
+
 class PackageViewSet(viewsets.ModelViewSet):
     queryset = Package.objects.all()
     serializer_class = PackageSerializer
     filter_backends = (CanWritePackageFilterBackend,)
     permission_classes = [TokenHasScope, TokenHasReadWriteScope]
     required_scopes = ['packages']
+
 
 class WishlistItemViewSet(viewsets.ViewSet):
     queryset = WishlistItem.objects.all()
@@ -93,6 +98,7 @@ class WishlistItemViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         return Response()
 
+
 class PackagePriceFilterBackend(BaseFilterBackend):
     def filter_queryset(self, request, queryset, view):
         filters = {}
@@ -104,6 +110,7 @@ class PackagePriceFilterBackend(BaseFilterBackend):
             filters['price__lte'] = price_max
         return queryset.filter(**filters)
 
+
 class PublicPackageViewSet(viewsets.ModelViewSet):
     permission_classes = [TokenHasScope]
     required_scopes = ['read']
@@ -112,6 +119,7 @@ class PublicPackageViewSet(viewsets.ModelViewSet):
     pagination_class = PackagePagination
     filter_backends = (PackagePriceFilterBackend, SearchFilter)
     search_fields = ('name', 'promo')
+
 
 class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.all()
